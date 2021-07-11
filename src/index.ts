@@ -1,10 +1,12 @@
-const Discord = require("discord.js");
-const config = require("./config.json");
+import config from './config.json';
+import { Client as DiscordClient} from "discord.js";
+import { MessageHandler } from "./messageHandler";
 
-const client = new Discord.Client();
+const client = new DiscordClient();
+const messageHandler = new MessageHandler(client);
 
 function listenToServerMessages(){
-
+  client.on("message", messageHandler.receivedMessage);
 }
 
 function botLogin(){
