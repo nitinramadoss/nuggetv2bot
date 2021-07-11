@@ -1,0 +1,21 @@
+{
+  "name": "NuggetV2",
+  "version": "1.0.0",
+  "description": "Discord bot for GatorNuggets",
+  "main": "main",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nitinramadoss/nuggetv2bot"
+  },
+  "keywords": [
+    "nuggetv2bot"
+  ],
+  "author": "NKR",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "discord.js": "^12.5.3"
+  }
+}
