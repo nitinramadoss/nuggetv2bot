@@ -9,6 +9,7 @@ function listenToServerMessages(){
 
 function botLogin(){
   client.login(config.BOT_TOKEN);
+  console.log("Bot is running.")
 }
 
 function init(){
