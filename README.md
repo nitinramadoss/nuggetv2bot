@@ -1,2 +1,4 @@
-# nuggetv2bot
-Discord bot to perform variety of server tasks
+# Nugget V2
+## Discord bot to perform variety of server tasks
+
+
