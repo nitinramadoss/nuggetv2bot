@@ -1,5 +1,7 @@
 # Nugget V.2
 ## GatorNugget's Discord bot
+<img src="https://github.com/nitinramadoss/nuggetv2bot/blob/main/assets/fivestar.jpg" alt="profile" height="75"/> 
+
 #### "Packed with attitude and snarky remarks" - Random user '21
 
 <img src="https://github.com/nitinramadoss/nuggetv2bot/blob/main/assets/nuggetbot.jpg" alt="profile" width="300"/>
