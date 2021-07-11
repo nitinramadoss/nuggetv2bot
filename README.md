@@ -12,3 +12,4 @@
 * Quote storage, retrieval 
 * Poem storage, retrieval
 * Conversation, joke, and roast responses
+* Anonymous impersonation messages

@@ -17,5 +17,8 @@
   "license": "UNLICENSED",
   "dependencies": {
     "discord.js": "^12.5.3"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5"
   }
 }
