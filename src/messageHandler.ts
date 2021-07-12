@@ -1,6 +1,6 @@
 import { Client, Message } from "discord.js";
 import { ICommandExecution } from "./CommandExecution";
-import { Command, ICommandParser } from "./CommandParser";
+import { CommandData, ICommandParser } from "./CommandParser";
 const BOT_ID = "863633669989466142"
 // Refer to https://github.com/discordjs/discord.js/blob/master/typings/index.d.ts for DiscordJS typings
 
@@ -33,7 +33,7 @@ export class MessageHandler implements IMessageHandler {
   */
   receivedMessage(message : Message){
     if(message.author.id != BOT_ID){
-      const command: Command | null = this.commandParser.parseCommand(message)
+      const command: CommandData | null = this.commandParser.parseCommand(message)
       if(command != null){
         this.commandExecution.executeCommand(command, this.client)
       }

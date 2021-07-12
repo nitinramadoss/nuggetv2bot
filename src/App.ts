@@ -1,7 +1,7 @@
 import { Client as DiscordClient, Message} from "discord.js";
 import { IMessageHandler, MessageHandler } from "./messageHandler";
 import { CommandExecution, ICommandExecution } from './CommandExecution';
-import { ImpersonationHandler } from './Impersonation';
+import { ImpersonationHandler } from './commands/Impersonation';
 import { CommandParser, ICommandParser } from './CommandParser';
 
 export class App {

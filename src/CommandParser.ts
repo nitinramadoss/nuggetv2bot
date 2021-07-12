@@ -11,7 +11,7 @@ export enum CommandType {
 /*
   Base Command interface to store the type of command and the underlying discord message associated with it.
 */
-export interface Command {
+export interface CommandData {
   type: CommandType,
   discordMessage?: Message
 }
@@ -20,8 +20,7 @@ export interface Command {
   Extension of the base Command interface for the Impersonate command.
   The impersonate command only needs the message to echo.
 */
-export interface ImpersonateCommand extends Command {
-  type: CommandType.Impersonate
+export interface ImpersonateCommandData extends CommandData {
   message: string
 }
 
@@ -30,7 +29,7 @@ export interface ImpersonateCommand extends Command {
 */
 export interface ICommandParser {
   PREFIX: string
-  parseCommand:(message: Message) => Command | null;
+  parseCommand:(message: Message) => CommandData | null;
 }
 
 /*
@@ -50,7 +49,7 @@ export class CommandParser implements ICommandParser {
     Then get the type of the command and convert the message text into a Command.
     If successful, populate the discordMessage variable and return the command.
   */
-  parseCommand(message: Message): Command | null {
+  parseCommand(message: Message): CommandData | null {
     // entire message (with prefix, command, and args)
     const messageText = message.content
     if(this.validPrefix(messageText)){
@@ -69,7 +68,7 @@ export class CommandParser implements ICommandParser {
   /*
     Convert the raw text a user sends into its corresponding Command using the given command type.
   */
-  buildCommandFromType(commandType: string, messageText: string): Command | null{
+  buildCommandFromType(commandType: string, messageText: string): CommandData | null{
     const args = messageText.split(" ").slice(1)
     switch(commandType){
       case CommandType.Impersonate:
@@ -83,9 +82,9 @@ export class CommandParser implements ICommandParser {
   /*
     Specific function to parse Impersonate Command data.
   */
-  parseImpersonateCommand(args: string[]): ImpersonateCommand{
+  parseImpersonateCommand(args: string[]): ImpersonateCommandData{
     const impersonateMessage = args.join(" ")
-    const command : ImpersonateCommand = {type: CommandType.Impersonate, message: impersonateMessage}
+    const command : ImpersonateCommandData = {type: CommandType.Impersonate, message: impersonateMessage}
     return command
   }
 

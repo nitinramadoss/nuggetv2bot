@@ -1,13 +1,14 @@
 import { Client, TextChannel } from "discord.js";
-import { ImpersonateCommand } from "./CommandParser";
+import { ImpersonateCommandData } from "../CommandParser";
+import { Command } from "./Command";
 
 /*
-  Interface to handle impersonation command.
+  Interface to handle impersonation command. Override the execute function.
 */
-export interface IImpersonationHandler {
+export interface IImpersonationHandler extends Omit<Command, 'execute'> {
   // This is the channel ID to explicitly send the message to.
   channelIDToSendMessage: string;
-  handleImpersonationCommand:(command: ImpersonateCommand, client: Client) => boolean;
+  execute:(command: ImpersonateCommandData, client: Client) => boolean;
 }
 
 /*
@@ -22,7 +23,7 @@ export class ImpersonationHandler implements IImpersonationHandler {
   /*
     Check if the command was sent in a DM to the bot, and resend the message to the given channel.
   */
-  handleImpersonationCommand(command: ImpersonateCommand, client: Client): boolean {
+  execute(command: ImpersonateCommandData, client: Client): boolean {
     if(command.discordMessage?.channel.type == "dm"){
       const channel = client.channels.cache.get(this.channelIDToSendMessage) as TextChannel;
       channel.send(command.message)
