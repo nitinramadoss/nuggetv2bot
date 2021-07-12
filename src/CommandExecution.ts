@@ -1,12 +1,12 @@
 import { Client } from "discord.js";
 import { CommandData, CommandType, ImpersonateCommandData } from "./CommandParser";
-import { ImpersonationHandler } from "./commands/Impersonation";
+import { IImpersonationHandler } from "./commands/Impersonation";
 
 /*
   A single interface to contain all of the implementions for each command.
 */
 export interface CommandExecutionInstances {
-  impersonationHandler: ImpersonationHandler;
+  impersonationHandler: IImpersonationHandler;
 }
 
 /*
