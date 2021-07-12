@@ -84,7 +84,7 @@ export class CommandParser implements ICommandParser {
     Specific function to parse Impersonate Command data.
   */
   parseImpersonateCommand(args: string[]): ImpersonateCommand{
-    const impersonateMessage = args[0]
+    const impersonateMessage = args.join(" ")
     const command : ImpersonateCommand = {type: CommandType.Impersonate, message: impersonateMessage}
     return command
   }
