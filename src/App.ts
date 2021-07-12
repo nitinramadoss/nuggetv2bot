@@ -1,4 +1,3 @@
-import config from './config.json';
 import { Client as DiscordClient, Message} from "discord.js";
 import { IMessageHandler, MessageHandler } from "./messageHandler";
 import { CommandExecution, ICommandExecution } from './CommandExecution';
@@ -21,7 +20,7 @@ export class App {
   }
 
   setupCommandParser(){
-    this.commandParser = new CommandParser()
+    this.commandParser = new CommandParser("/")
   }
 
   setupMessageHandler(){
@@ -30,17 +29,17 @@ export class App {
 
   listenToServerMessages(){
     this.client.on("message", async (message: Message) =>{
-      this.messageHandler.receivedMessage(message, this.client)
+      this.messageHandler.receivedMessage(message)
     });
   }
 
-  botLogin(){
-    this.client.login(config.BOT_TOKEN);
+  botLogin(botToken: string){
+    this.client.login(botToken);
     console.log("Bot is running.")
   }
 
-  constructor(){
-    this.botLogin()
+  constructor(botToken: string){
+    this.botLogin(botToken)
     this.setupCommandParser()
     this.setupCommandExecution()
     this.setupMessageHandler()
