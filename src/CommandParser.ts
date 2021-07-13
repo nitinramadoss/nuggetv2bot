@@ -1,4 +1,6 @@
 import { Message } from "discord.js";
+import { ICommand } from "./commands/Command";
+import { IImpersonateCommand, ImpersonationCommand } from "./commands/Impersonation";
 
 /* 
   Enum to keep track the current commands that are implemented and the string needed to execute that command.
@@ -9,39 +11,24 @@ export enum CommandType {
 }
 
 /*
-  Base Command interface to store the type of command and the underlying discord message associated with it.
-*/
-export interface CommandData {
-  type: CommandType,
-  discordMessage?: Message
-}
-
-/*
-  Extension of the base Command interface for the Impersonate command.
-  The impersonate command only needs the message to echo.
-*/
-export interface ImpersonateCommandData extends CommandData {
-  message: string
-}
-
-/*
-  Interface to handle command parsing (converting a discord message into a Command interface)
-*/
-export interface ICommandParser {
-  PREFIX: string
-  parseCommand:(message: Message) => CommandData | null;
-}
-
-/*
   Implementation to handle converting a Message into a Command.
 */
-export class CommandParser implements ICommandParser {
-  PREFIX: string
-
+export class CommandParser {
+  private static PREFIX: string = "/"
+  // private static instance: CommandParser;
+// 
   // Initialize the Parser with a prefix to look for at the start of each message.
-  constructor(prefix: string){
-    this.PREFIX = prefix
-  }
+  // private constructor(){
+
+  // }
+
+  // public static getInstance(): CommandParser {
+  //   if (!CommandParser.instance) {
+  //     CommandParser.instance = new CommandParser();
+  //   }
+
+  //   return CommandParser.instance;
+  // }
 
   /*
     Function to convert a Message to a Command.
@@ -49,7 +36,7 @@ export class CommandParser implements ICommandParser {
     Then get the type of the command and convert the message text into a Command.
     If successful, populate the discordMessage variable and return the command.
   */
-  parseCommand(message: Message): CommandData | null {
+  public static parseCommand(message: Message): ICommand | null {
     // entire message (with prefix, command, and args)
     const messageText = message.content
     if(this.validPrefix(messageText)){
@@ -68,7 +55,7 @@ export class CommandParser implements ICommandParser {
   /*
     Convert the raw text a user sends into its corresponding Command using the given command type.
   */
-  buildCommandFromType(commandType: string, messageText: string): CommandData | null{
+  public static buildCommandFromType(commandType: string, messageText: string): ICommand | null{
     const args = messageText.split(" ").slice(1)
     switch(commandType){
       case CommandType.Impersonate:
@@ -82,16 +69,16 @@ export class CommandParser implements ICommandParser {
   /*
     Specific function to parse Impersonate Command data.
   */
-  parseImpersonateCommand(args: string[]): ImpersonateCommandData{
+  public static parseImpersonateCommand(args: string[]): IImpersonateCommand{
     const impersonateMessage = args.join(" ")
-    const command : ImpersonateCommandData = {type: CommandType.Impersonate, message: impersonateMessage}
+    const command = new ImpersonationCommand("863639521564295221", impersonateMessage)
     return command
   }
 
   /*
     Function to test if a message starts with the required prefix
   */
-  validPrefix(messageText: string): boolean {
+  public static validPrefix(messageText: string): boolean {
     let prefix = messageText.substring(0, this.PREFIX.length)
     return prefix == this.PREFIX
   }
@@ -99,7 +86,7 @@ export class CommandParser implements ICommandParser {
   /*
     Returns the type of command (the text after the prefix)
   */
-  getCommandType(messageText: string): string | null {
+  public static getCommandType(messageText: string): string | null {
     // Splits by spaces, and removes the prefix from the first element to leave just the command type.
     const messageParts = messageText.split(" ");
     if(messageParts.length > 0){

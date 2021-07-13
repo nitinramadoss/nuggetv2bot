@@ -1,6 +1,6 @@
 import { Client, Message } from "discord.js";
-import { ICommandExecution } from "./CommandExecution";
-import { CommandData, ICommandParser } from "./CommandParser";
+import { CommandParser } from "./CommandParser";
+import { ICommand } from "./commands/Command";
 const BOT_ID = "863633669989466142"
 // Refer to https://github.com/discordjs/discord.js/blob/master/typings/index.d.ts for DiscordJS typings
 
@@ -9,8 +9,6 @@ const BOT_ID = "863633669989466142"
 */
 export interface IMessageHandler {
   client: Client;
-  commandExecution: ICommandExecution;
-  commandParser: ICommandParser;
   receivedMessage:(message : Message) => void;
 }
 
@@ -19,12 +17,8 @@ export interface IMessageHandler {
 */
 export class MessageHandler implements IMessageHandler {
   client: Client;
-  commandExecution: ICommandExecution;
-  commandParser: ICommandParser;
-  constructor(client: Client, commandExecution: ICommandExecution, commandParser: ICommandParser){
+  constructor(client: Client){
     this.client = client;
-    this.commandExecution = commandExecution
-    this.commandParser = commandParser
   }
 
   /*
@@ -33,9 +27,9 @@ export class MessageHandler implements IMessageHandler {
   */
   receivedMessage(message : Message){
     if(message.author.id != BOT_ID){
-      const command: CommandData | null = this.commandParser.parseCommand(message)
+      const command: ICommand | null = CommandParser.parseCommand(message)
       if(command != null){
-        this.commandExecution.executeCommand(command, this.client)
+        command.execute(this.client)
       }
     }
   }
