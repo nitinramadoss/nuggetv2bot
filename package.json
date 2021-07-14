@@ -20,13 +20,20 @@
   "author": "NKR",
   "license": "UNLICENSED",
   "dependencies": {
-    "discord.js": "^12.5.3"
+    "axios": "^0.21.1",
+    "discord.js": "^12.5.3",
+    "yarn": "^1.22.10"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-typescript": "^7.14.5",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.3.1",
     "@types/ws": "^7.4.6",
+    "babel-jest": "^27.0.6",
     "jest": "^27.0.6",
+    "random-question": "^0.2.1",
     "typescript": "^4.3.5"
   }
 }

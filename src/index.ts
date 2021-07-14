@@ -1,4 +1,4 @@
-import config from './config.json';
+import config from '../config.json';
 import { Client as DiscordClient} from "discord.js";
 import { MessageHandler } from "./messageHandler";
 
@@ -14,7 +14,7 @@ function botLogin(){
   console.log("Bot is running.")
 }
 
-function init(){
+async function init(){
   botLogin()
   listenToServerMessages()
 }
