@@ -1,5 +1,6 @@
 import { Message } from "discord.js";
 import { ICommand } from "./commands/Command";
+import { GenerationCommand } from "./commands/Generation";
 import { IImpersonateCommand, ImpersonationCommand } from "./commands/Impersonation";
 
 /* 
@@ -7,7 +8,8 @@ import { IImpersonateCommand, ImpersonationCommand } from "./commands/Impersonat
   Must be all lowercase to match.
 */
 export enum CommandType {
-  Impersonate = "impersonate"
+  Impersonate = "impersonate",
+  Generate = "random"
 }
 
 /*
@@ -60,6 +62,8 @@ export class CommandParser {
     switch(commandType){
       case CommandType.Impersonate:
         return this.parseImpersonateCommand(args)
+      case CommandType.Generate:
+        return this.parseGenerateCommand(args)
       // case CommandType.FutureCommandType:
       //   return this.<function>
     }
@@ -74,6 +78,15 @@ export class CommandParser {
     const command = new ImpersonationCommand("863639521564295221", impersonateMessage)
     return command
   }
+
+  /*
+    Specific function to parse Generate Command data.
+  */
+    public static parseGenerateCommand(args: string[]): IImpersonateCommand{
+      const generateMessage = args.join(" ")
+      const command = new GenerationCommand("863639521564295221", generateMessage)
+      return command
+    }
 
   /*
     Function to test if a message starts with the required prefix
