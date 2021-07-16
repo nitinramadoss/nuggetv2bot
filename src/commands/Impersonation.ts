@@ -1,5 +1,5 @@
 import { Client, Message, TextChannel } from "discord.js";
-import { CommandType, ICommand } from "./Command";
+import { ICommand } from "./Command";
 
 /*
   Extension of the base Command interface for the Impersonate command.
@@ -15,7 +15,6 @@ export interface IImpersonateCommand extends ICommand {
   Implementation of Impersonation command execution.
 */
 export class ImpersonateCommand implements IImpersonateCommand {
-  type: CommandType
   discordMessage?: Message
   channelIDToSendMessage: string;
   message: string

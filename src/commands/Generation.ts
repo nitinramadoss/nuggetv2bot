@@ -1,6 +1,6 @@
 import { Client, Message } from "discord.js";
 import { ComplimentGenerator, InsultGenerator, JokeGenerator } from "../generators";
-import { CommandType, ICommand } from "./Command";
+import { ICommand } from "./Command";
 
 enum GenerationType {
   Joke = "joke",
@@ -19,7 +19,6 @@ export interface IGenerationCommand extends ICommand {
   Implementation of Generation command execution.
 */
 export class GenerateCommand implements IGenerationCommand {
-  type: CommandType
   discordMessage?: Message
   generationType: string
   constructor(generationType: string){
