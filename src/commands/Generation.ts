@@ -1,45 +1,46 @@
-import { Client, Message, TextChannel } from "discord.js";
+import { Client, Message } from "discord.js";
 import { ComplimentGenerator, InsultGenerator, JokeGenerator } from "../generators";
 import { CommandType, ICommand } from "./Command";
+
+enum GenerationType {
+  Joke = "joke",
+  Roast = "roast",
+  Compliment = "compliment"
+}
 
 /*
   Extension of the base Command interface for the Generate command.
 */
 export interface IGenerationCommand extends ICommand {
-  // This is the channel ID to explicitly send the message to.
-  channelIDToSendMessage: string;
-  message: string;
+  generationType: string;
 }
 
 /*
-  Implementation of Impersonation command execution.
+  Implementation of Generation command execution.
 */
-export class GenerationCommand implements IGenerationCommand {
+export class GenerateCommand implements IGenerationCommand {
   type: CommandType
   discordMessage?: Message
-  channelIDToSendMessage: string;
-  message: string
-  constructor(channelIDToSendMessage: string, message: string){
-    this.channelIDToSendMessage = channelIDToSendMessage
-    this.message = message
+  generationType: string
+  constructor(generationType: string){
+    this.generationType = generationType
   }
 
   /*
     Check which random generator was requested, then send random phrase to the given channel
   */
-  async execute(client: Client) {
-    const channel = client.channels.cache.get(this.channelIDToSendMessage) as TextChannel;
+  async execute(_?: Client) {
     var generator
     var phrase = "Not valid" //default
     
-    switch(this.message){
-      case "joke":
+    switch(this.generationType){
+      case GenerationType.Joke:
         generator = new JokeGenerator()
         break
-      case "roast":
+      case GenerationType.Roast:
         generator = new InsultGenerator()
         break
-      case "compliment":
+      case GenerationType.Compliment:
         generator = new ComplimentGenerator()
         break
     }
@@ -47,7 +48,7 @@ export class GenerationCommand implements IGenerationCommand {
     if (generator != undefined) {
       phrase = await generator.generate()
     }
-
-    channel.send(phrase)
+    
+    this.discordMessage?.channel.send(phrase)
   }
 }

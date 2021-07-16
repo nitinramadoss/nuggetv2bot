@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 import { ICommand } from "./commands/Command";
-import { GenerationCommand } from "./commands/Generation";
-import { IImpersonateCommand, ImpersonationCommand } from "./commands/Impersonation";
+import { GenerateCommand, IGenerationCommand } from "./commands/Generation";
+import { IImpersonateCommand, ImpersonateCommand } from "./commands/Impersonation";
 
 /* 
   Enum to keep track the current commands that are implemented and the string needed to execute that command.
@@ -17,21 +17,6 @@ export enum CommandType {
 */
 export class CommandParser {
   private static PREFIX: string = "/"
-  // private static instance: CommandParser;
-// 
-  // Initialize the Parser with a prefix to look for at the start of each message.
-  // private constructor(){
-
-  // }
-
-  // public static getInstance(): CommandParser {
-  //   if (!CommandParser.instance) {
-  //     CommandParser.instance = new CommandParser();
-  //   }
-
-  //   return CommandParser.instance;
-  // }
-
   /*
     Function to convert a Message to a Command.
     First check if there is a valid command prefix at the start of a mesage (such as "/").
@@ -75,18 +60,18 @@ export class CommandParser {
   */
   public static parseImpersonateCommand(args: string[]): IImpersonateCommand{
     const impersonateMessage = args.join(" ")
-    const command = new ImpersonationCommand("863639521564295221", impersonateMessage)
+    const command = new ImpersonateCommand("863639521564295221", impersonateMessage)
     return command
   }
 
   /*
     Specific function to parse Generate Command data.
   */
-    public static parseGenerateCommand(args: string[]): IImpersonateCommand{
-      const generateMessage = args.join(" ")
-      const command = new GenerationCommand("863639521564295221", generateMessage)
-      return command
-    }
+  public static parseGenerateCommand(args: string[]): IGenerationCommand{
+    const generateMessage = args[0]
+    const command = new GenerateCommand(generateMessage)
+    return command
+  }
 
   /*
     Function to test if a message starts with the required prefix

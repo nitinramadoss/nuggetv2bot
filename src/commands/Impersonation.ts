@@ -14,7 +14,7 @@ export interface IImpersonateCommand extends ICommand {
 /*
   Implementation of Impersonation command execution.
 */
-export class ImpersonationCommand implements IImpersonateCommand {
+export class ImpersonateCommand implements IImpersonateCommand {
   type: CommandType
   discordMessage?: Message
   channelIDToSendMessage: string;
@@ -27,13 +27,11 @@ export class ImpersonationCommand implements IImpersonateCommand {
   /*
     Check if the command was sent in a DM to the bot, and resend the message to the given channel.
   */
-  execute(client: Client): boolean {
-    if(this.discordMessage?.channel.type == "dm"){
-      const channel = client.channels.cache.get(this.channelIDToSendMessage) as TextChannel;
-      channel.send(this.message)
-      return true;
-    }else{
-      return false;
+  execute(client?: Client) {
+    if(this.discordMessage?.channel.type != "dm"){
+      return
     }
+    const channel = client?.channels.cache.get(this.channelIDToSendMessage) as TextChannel;
+    channel.send(this.message)
   }
 }

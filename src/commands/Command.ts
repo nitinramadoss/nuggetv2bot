@@ -14,5 +14,5 @@ export enum CommandType {
 export interface ICommand {
   type: CommandType,
   discordMessage?: Message
-  execute:(client: Client) => void;
+  execute:(client?: Client) => void;
 }
