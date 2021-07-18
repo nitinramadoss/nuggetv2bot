@@ -1,11 +1,12 @@
 import { Client, Message } from "discord.js";
-import { ComplimentGenerator, InsultGenerator, JokeGenerator } from "../generators";
+import { ComplimentGenerator, InsultGenerator, JokeGenerator, TriviaGenerator } from "../generators";
 import { ICommand } from "./Command";
 
 enum GenerationType {
   Joke = "joke",
   Roast = "roast",
-  Compliment = "compliment"
+  Compliment = "compliment",
+  Trivia = "trivia"
 }
 
 /*
@@ -41,6 +42,9 @@ export class GenerateCommand implements IGenerationCommand {
         break
       case GenerationType.Compliment:
         generator = new ComplimentGenerator()
+        break
+      case GenerationType.Trivia:
+        generator = new TriviaGenerator()
         break
     }
     
