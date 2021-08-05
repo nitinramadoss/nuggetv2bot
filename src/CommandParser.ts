@@ -81,18 +81,8 @@ export class CommandParser {
 
   public static parseQuoteCommand(args: string[]): IQuoteCommand{
     const generateMessage = args[0]
-    var stringValue = ""
-    for( let i = 1; i < args.length; i = i + 1){
-      if (i == 1){
-        stringValue = stringValue + args[i];
-      }
-      else{
-        stringValue = stringValue + " " + args[i];
-      }
-    }
     const size: number = args.length
-    //console.log(stringValue)
-    const command = new QuoteCommand(generateMessage, stringValue, size)
+    const command = new QuoteCommand(generateMessage, args.slice(1).join(" "), size)
     return command
   }
 

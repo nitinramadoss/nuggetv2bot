@@ -10,7 +10,7 @@ const fs = require('fs');
 //The types of commands are as followed
 //:quote 
 //:quote find #2
-//:quote find "yolo"
+//:quote find "yolo" // Working
 //:quote find
 //:quote random
 //:quote delete
@@ -20,6 +20,8 @@ const fs = require('fs');
 //Satvik = 2
 //NKR = 3
 //AweKingSome = 4
+
+var userNames = ["TheLegend27","Edison", "Satvik", "NKR", "AweKingSome"]
 
 export interface IQuoteCommand extends ICommand {
   generationType: string;
@@ -49,16 +51,11 @@ export class QuoteCommand implements IQuoteCommand {
             // console.log("generationType")
             // console.log(this.generationType)
             var value = -1
-            if (message.author.username == "TheLegend27"){
-              value = 0;
-            } else if (message.author.username == "Edison"){
-              value = 1;
-            } else if (message.author.username == "Satvik"){
-              value = 2;
-            } else if (message.author.username == "NKR"){
-              value = 3
-            } else if (message.author.username == "AweKingSome"){
-              value = 4
+            for(let i = 0; i < userNames.length; i = i + 1){
+              if(message.author.username == userNames[i]){
+                value = i;
+                break;
+              }
             }
             const data = fs.readFileSync('quotes.json', 'utf8');
             const userArray = JSON.parse(data)
@@ -67,16 +64,11 @@ export class QuoteCommand implements IQuoteCommand {
                 const quote = {
                   "quote": message.content,
                 }
-                if (message.author.username == "TheLegend27") {
-                  userArray[0].push(quote)
-                } else if(message.author.username == "Edison") {
-                  userArray[1].push(quote)
-                } else if(message.author.username == "Satvik") {
-                  userArray[2].push(quote)
-                } else if(message.author.username == "NKR") {
-                  userArray[3].push(quote)
-                } else if(message.author.username == "AweKingSum") {
-                  userArray[4].push(quote)
+                for(let i = 0; i < userNames.length; i = i + 1){
+                  if(message.author.username == userNames[i]){
+                    userArray[i].push(quote)
+                    break;
+                  }
                 }
                 fs.writeFileSync('quotes.json', JSON.stringify(userArray));
                 console.log("JSON data is saved.");
@@ -89,15 +81,10 @@ export class QuoteCommand implements IQuoteCommand {
               try{
                 // :quote find #2 -> Still Works
                 if(this.findTypeSize == 2){
-                  let number = this.findType[1]
-                  if(this.findType[2] != null){
-                    number = number + this.findType[2]
-                  }
-                  if(this.findType[3] != null){
-                    number = number + this.findType[3]
-                  }
+                  let number = this.findType.substring(1)
                   if(this.findType[0] == "#"){
-                    if(parseInt(number) <= Object.keys(userArray[value]).length){
+                    let parsedNumber = parseInt(number)
+                    if(parsedNumber <= Object.keys(userArray[value]).length){
                       this.discordMessage?.channel.send(userArray[value][parseInt(this.findType[1])-1].quote)
                     }else{
                       this.discordMessage?.channel.send("The #X of quote does not exist for this person")
@@ -105,32 +92,32 @@ export class QuoteCommand implements IQuoteCommand {
                   }
                   // :quote find "yolo" -> Still Works
                   else if(this.findType[0] == '"' ){
-                    let word = ""
-                    for(let i = 1; i < this.findType.length-1; i = i + 1){
-                      word = word + this.findType[i]
-                    }
-                    let match = 0;
+                    let word = this.findType.substring(1, this.findType.length)
+                    let number = 0
+                    // let match = 0;
                     for(let i = 0; i < Object.keys(userArray[value]).length; i = i + 1){
                       let text = userArray[value][i].quote
                       if(text.indexOf(word) > -1){
-                        this.discordMessage?.channel.send(i)
-                        this.discordMessage?.channel.send(userArray[value][i].quote)
-                        match = -1
+                        word = userArray[value][i].quote
+                        number = i
+                        // match = -1
                       }
                     }
-                    console.log(match)
-                    if (match == 0){
+                    if (word == ""){
                       this.discordMessage?.channel.send("The person has written no quote with the given phrase")
+                    } else {
+                      this.discordMessage?.channel.send(number + " " + word)
                     }
                   }
                 }
                 // :quote find
                 else if(this.findTypeSize == 1){
                   if(this.generationType == "find"){
+                    let word = ""
                     for(let i = 0; i < Object.keys(userArray[value]).length; i = i + 1){
-                      this.discordMessage?.channel.send(i)
-                      this.discordMessage?.channel.send(userArray[value][i].quote)
+                      word = word + " " + i + " " + userArray[value][i].quote
                     }
+                    this.discordMessage?.channel.send(word)
                   }
                 }
               }catch (error) {
@@ -139,9 +126,8 @@ export class QuoteCommand implements IQuoteCommand {
             }
             else if(this.generationType == "random" && Object.keys(userArray[value]).length > 0 ){
               try{
-                var i = Math.floor(Math.random() * userArray[value].length);
-                this.discordMessage?.channel.send(i)
-                this.discordMessage?.channel.send(userArray[value][i].quote)
+                var i = Math.floor(Math.random() * userArray[value].length-1);
+                this.discordMessage?.channel.send(i + " " + userArray[value][i].quote)
                       //Will implement once more quotes are added.
                       // else if(this.findType == "Random"){
                       //   var a = Math.floor(Math.random() * userArray.length);
@@ -155,31 +141,15 @@ export class QuoteCommand implements IQuoteCommand {
             }
             else if(this.generationType == "delete" && Object.keys(userArray[value]).length > 0 ){
               try{
-                let number = this.findType[1]
-                if(this.findType[2] != null){
-                  number = number + this.findType[2]
-                }
-                if(this.findType[3] != null){
-                  number = number + this.findType[3]
-                }
-                if(parseInt(number)-1 <= Object.keys(userArray).length){
+                let number = this.findType.substring(1)
+                if(parseInt(number)-1 < Object.keys(userArray).length){
                   userArray[value].splice(parseInt(number)-1,1)
                   const data2 = fs.readFileSync('quotes2.json', 'utf8');
                   const newUserArray = JSON.parse(data2)
                   for(let i = 0; i < Object.keys(userArray).length; i = i + 1){
                     for(let j = 0; j < Object.keys(userArray[i]).length; j = j + 1){
                       try {
-                        if (i == 0) {
-                          newUserArray[0].push(userArray[i][j])
-                        } else if (i == 1) {
-                          newUserArray[1].push(userArray[i][j])
-                        } else if (i == 2) {
-                          newUserArray[2].push(userArray[i][j])
-                        } else if (i == 3) {
-                          newUserArray[3].push(userArray[i][j])
-                        } else if (i == 4) {
-                          newUserArray[4].push(userArray[i][j])
-                        }
+                        newUserArray[i].push(userArray[i][j])
                       } catch (error) {
                         console.log("JSON data cannot be saved")
                         console.error(err);
