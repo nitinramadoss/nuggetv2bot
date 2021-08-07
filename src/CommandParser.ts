@@ -2,6 +2,8 @@ import { Message } from "discord.js";
 import { ICommand } from "./commands/Command";
 import { GenerateCommand, IGenerationCommand } from "./commands/Generation";
 import { IImpersonateCommand, ImpersonateCommand } from "./commands/Impersonation";
+import { IJokeCommand, JokeCommand } from "./commands/Joke";
+import { IPoemCommand, PoemCommand } from "./commands/Poem";
 import { IQuoteCommand, QuoteCommand } from "./commands/Quote";
 
 
@@ -13,6 +15,8 @@ export enum CommandType {
   Impersonate = "impersonate",
   Generate = "random",
   Quote = "quote",
+  Poem = "poem",
+  Joke = "joke"
 }
 
 /*
@@ -49,6 +53,7 @@ export class CommandParser {
   */
   public static buildCommandFromType(commandType: string, messageText: string): ICommand | null{
     const args = messageText.split(" ").slice(1)
+    console.log(args)
     switch(commandType){
       case CommandType.Impersonate:
         return this.parseImpersonateCommand(args)
@@ -56,6 +61,10 @@ export class CommandParser {
         return this.parseGenerateCommand(args)
       case CommandType.Quote:
           return this.parseQuoteCommand(args)
+      case CommandType.Poem:
+          return this.parsePoemCommand(args)
+      case CommandType.Poem:
+          return this.parseJokeCommand(args)
       // case CommandType.FutureCommandType:
       //   return this.<function>
     }
@@ -84,6 +93,20 @@ export class CommandParser {
     const generateMessage = args[0]
     const size: number = args.length
     const command = new QuoteCommand(generateMessage, args.slice(1).join(" "), size)
+    return command
+  }
+
+  public static parsePoemCommand(args: string[]): IPoemCommand{
+    const generateMessage = args[0]
+    const size: number = args.length
+    const command = new PoemCommand(generateMessage, args.slice(1).join(" "), size)
+    return command
+  }
+
+  public static parseJokeCommand(args: string[]): IJokeCommand{
+    const generateMessage = args[0]
+    const size: number = args.length
+    const command = new JokeCommand(generateMessage, args.slice(1).join(" "), size)
     return command
   }
 

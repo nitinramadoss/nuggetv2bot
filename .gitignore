@@ -108,4 +108,6 @@ config.json
 
 # Quotes storage
 quotes.json
+jokes.json
+poemes.json
 package-lock.json
