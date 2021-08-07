@@ -2,6 +2,10 @@ import { Message } from "discord.js";
 import { ICommand } from "./commands/Command";
 import { GenerateCommand, IGenerationCommand } from "./commands/Generation";
 import { IImpersonateCommand, ImpersonateCommand } from "./commands/Impersonation";
+import { IJokeCommand, JokeCommand } from "./commands/Joke";
+import { IPoemCommand, PoemCommand } from "./commands/Poem";
+import { IQuoteCommand, QuoteCommand } from "./commands/Quote";
+
 
 /* 
   Enum to keep track the current commands that are implemented and the string needed to execute that command.
@@ -9,14 +13,19 @@ import { IImpersonateCommand, ImpersonateCommand } from "./commands/Impersonatio
 */
 export enum CommandType {
   Impersonate = "impersonate",
-  Generate = "random"
+  Generate = "random",
+  Quote = "quote",
+  Poem = "poem",
+  Joke = "joke"
 }
 
 /*
   Implementation to handle converting a Message into a Command.
 */
 export class CommandParser {
-  private static PREFIX: string = "/"
+
+  private static PREFIX: string = ":"
+
   /*
     Function to convert a Message to a Command.
     First check if there is a valid command prefix at the start of a mesage (such as "/").
@@ -44,11 +53,18 @@ export class CommandParser {
   */
   public static buildCommandFromType(commandType: string, messageText: string): ICommand | null{
     const args = messageText.split(" ").slice(1)
+    console.log(args)
     switch(commandType){
       case CommandType.Impersonate:
         return this.parseImpersonateCommand(args)
       case CommandType.Generate:
         return this.parseGenerateCommand(args)
+      case CommandType.Quote:
+          return this.parseQuoteCommand(args)
+      case CommandType.Poem:
+          return this.parsePoemCommand(args)
+      case CommandType.Poem:
+          return this.parseJokeCommand(args)
       // case CommandType.FutureCommandType:
       //   return this.<function>
     }
@@ -70,6 +86,27 @@ export class CommandParser {
   public static parseGenerateCommand(args: string[]): IGenerationCommand{
     const generateMessage = args[0]
     const command = new GenerateCommand(generateMessage)
+    return command
+  }
+
+  public static parseQuoteCommand(args: string[]): IQuoteCommand{
+    const generateMessage = args[0]
+    const size: number = args.length
+    const command = new QuoteCommand(generateMessage, args.slice(1).join(" "), size)
+    return command
+  }
+
+  public static parsePoemCommand(args: string[]): IPoemCommand{
+    const generateMessage = args[0]
+    const size: number = args.length
+    const command = new PoemCommand(generateMessage, args.slice(1).join(" "), size)
+    return command
+  }
+
+  public static parseJokeCommand(args: string[]): IJokeCommand{
+    const generateMessage = args[0]
+    const size: number = args.length
+    const command = new JokeCommand(generateMessage, args.slice(1).join(" "), size)
     return command
   }
 

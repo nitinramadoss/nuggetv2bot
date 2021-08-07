@@ -105,4 +105,9 @@ dist
 
 # Config vars
 config.json
+
+# Quotes storage
+quotes.json
+jokes.json
+poemes.json
 package-lock.json

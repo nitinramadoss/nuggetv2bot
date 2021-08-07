@@ -29,10 +29,11 @@ export class GenerateCommand implements IGenerationCommand {
   /*
     Check which random generator was requested, then send random phrase to the given channel
   */
+
   async execute(_?: Client) {
     var generator
     var phrase = "Not valid" //default
-    
+
     switch(this.generationType){
       case GenerationType.Joke:
         generator = new JokeGenerator()

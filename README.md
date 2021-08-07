@@ -9,9 +9,10 @@
 [Image source](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.pinterest.com%2Fpin%2F682858362233399196%2F&psig=AOvVaw0hQxTtM9mpX1OzfoWI4UhQ&ust=1626066059669000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCICnsaGe2vECFQAAAAAdAAAAABAJ) - Google images
 
 ### Features
-* Quote storage, retrieval 
+* Quote storage, retrieval, and responses 
 * Poem storage, retrieval
 * Conversation, joke, and roast responses
+* Music Suggestions
 * Anonymous impersonation messages
 
 ### Installation
