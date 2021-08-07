@@ -4,6 +4,7 @@ import { GenerateCommand, IGenerationCommand } from "./commands/Generation";
 import { IImpersonateCommand, ImpersonateCommand } from "./commands/Impersonation";
 import { IQuoteCommand, QuoteCommand } from "./commands/Quote";
 
+
 /* 
   Enum to keep track the current commands that are implemented and the string needed to execute that command.
   Must be all lowercase to match.
@@ -11,14 +12,17 @@ import { IQuoteCommand, QuoteCommand } from "./commands/Quote";
 export enum CommandType {
   Impersonate = "impersonate",
   Generate = "random",
-  Quote = "quote"
+  Quote = "quote",
+  Generate = "random"
 }
 
 /*
   Implementation to handle converting a Message into a Command.
 */
 export class CommandParser {
+
   private static PREFIX: string = ":"
+
   /*
     Function to convert a Message to a Command.
     First check if there is a valid command prefix at the start of a mesage (such as "/").
@@ -53,8 +57,6 @@ export class CommandParser {
         return this.parseGenerateCommand(args)
       case CommandType.Quote:
           return this.parseQuoteCommand(args)
-      // case CommandType.Quote:
-      //   return this.parseQuoteCommand(args)
       // case CommandType.FutureCommandType:
       //   return this.<function>
     }
@@ -91,7 +93,6 @@ export class CommandParser {
   */
   public static validPrefix(messageText: string): boolean {
     let prefix = messageText.substring(0, this.PREFIX.length)
-    //console.log(prefix)
     return prefix == this.PREFIX
   }
 
@@ -102,7 +103,6 @@ export class CommandParser {
     // Splits by spaces, and removes the prefix from the first element to leave just the command type.
     const messageParts = messageText.split(" ");
     if(messageParts.length > 0){
-      //console.log(messageParts)
       return messageParts[0].substring(this.PREFIX.length)
     }
     return null

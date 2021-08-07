@@ -13,3 +13,14 @@
 * Poem storage, retrieval
 * Conversation, joke, and roast responses
 * Music Suggestions
+* Anonymous impersonation messages
+
+### Installation
+## Packages
+Run `npm install` in root directory
+
+## Build and Run
+Run `npm run build` then `node ./dist/index.js`
+
+## Run Tests
+Run `npm test`

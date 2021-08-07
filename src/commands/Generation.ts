@@ -33,6 +33,7 @@ export class GenerateCommand implements IGenerationCommand {
   async execute(_?: Client) {
     var generator
     var phrase = "Not valid" //default
+
     switch(this.generationType){
       case GenerationType.Joke:
         generator = new JokeGenerator()

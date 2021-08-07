@@ -34,4 +34,3 @@ export class ImpersonateCommand implements IImpersonateCommand {
     channel.send(this.message)
   }
 }
-
