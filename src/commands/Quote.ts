@@ -85,7 +85,7 @@ export class QuoteCommand implements IQuoteCommand {
                   if(this.findType[0] == "#"){
                     let parsedNumber = parseInt(number)
                     if(parsedNumber <= Object.keys(userArray[value]).length){
-                      this.discordMessage?.channel.send(userArray[value][parseInt(this.findType[1])-1].quote)
+                      this.discordMessage?.channel.send(userArray[value][parseInt(this.findType[parsedNumber])-1].quote)
                     }else{
                       this.discordMessage?.channel.send("The #X of quote does not exist for this person")
                     }
