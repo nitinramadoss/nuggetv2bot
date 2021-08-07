@@ -21,8 +21,6 @@ const fs = require('fs');
 //NKR = 3
 //AweKingSome = 4
 
-var userNames = ["TheLegend27","Edison", "Satvik", "NKR", "AweKingSome"]
-
 export interface IQuoteCommand extends ICommand {
   generationType: string;
   findType: string;
@@ -50,42 +48,37 @@ export class QuoteCommand implements IQuoteCommand {
             // console.log(this.findTypeSize)
             // console.log("generationType")
             // console.log(this.generationType)
-            var value = -1
-            for(let i = 0; i < userNames.length; i = i + 1){
-              if(message.author.username == userNames[i]){
-                value = i;
-                break;
-              }
-            }
+            var value = message.author.id
             const data = fs.readFileSync('quotes.json', 'utf8');
             const userArray = JSON.parse(data)
             if(this.findTypeSize == 0){
               try {
                 const quote = {
                   "quote": message.content,
+                  "quoteTimestamp": message.createdTimestamp,
+                  "messageId": message.id
                 }
-                for(let i = 0; i < userNames.length; i = i + 1){
-                  if(message.author.username == userNames[i]){
-                    userArray[i].push(quote)
-                    break;
-                  }
+                if (userArray[value] == null) {
+                  userArray[value] = []
                 }
+                userArray[value].push(quote)
+                //Sort the quotes
                 fs.writeFileSync('quotes.json', JSON.stringify(userArray));
                 console.log("JSON data is saved.");
               } catch (error) {
                 console.log("JSON data cannot be saved")
-                console.error(err);
+                console.error(error);
               }
             }
-            else if(this.generationType == "find" && Object.keys(userArray[value]).length > 0 ){ 
+            else if(this.generationType == "find" && userArray[value].length > 0 ){ 
               try{
                 // :quote find #2 -> Still Works
                 if(this.findTypeSize == 2){
-                  let number = this.findType.substring(1)
                   if(this.findType[0] == "#"){
+                    let number = this.findType.substring(1)
                     let parsedNumber = parseInt(number)
-                    if(parsedNumber <= Object.keys(userArray[value]).length){
-                      this.discordMessage?.channel.send(userArray[value][parseInt(this.findType[parsedNumber])-1].quote)
+                    if(parsedNumber <= userArray[value].length){
+                      this.discordMessage?.channel.send(userArray[value][parsedNumber-1].quote)
                     }else{
                       this.discordMessage?.channel.send("The #X of quote does not exist for this person")
                     }
@@ -95,7 +88,7 @@ export class QuoteCommand implements IQuoteCommand {
                     let word = this.findType.substring(1, this.findType.length)
                     let number = 0
                     // let match = 0;
-                    for(let i = 0; i < Object.keys(userArray[value]).length; i = i + 1){
+                    for(let i = 0; i < userArray[value].length; i = i + 1){
                       let text = userArray[value][i].quote
                       if(text.indexOf(word) > -1){
                         word = userArray[value][i].quote
@@ -114,7 +107,7 @@ export class QuoteCommand implements IQuoteCommand {
                 else if(this.findTypeSize == 1){
                   if(this.generationType == "find"){
                     let word = ""
-                    for(let i = 0; i < Object.keys(userArray[value]).length; i = i + 1){
+                    for(let i = 0; i < userArray[value].length; i = i + 1){
                       word = word + " " + i + " " + userArray[value][i].quote
                     }
                     this.discordMessage?.channel.send(word)
@@ -124,7 +117,7 @@ export class QuoteCommand implements IQuoteCommand {
                 console.log("Generator Type Find Is Not Working")
               }
             }
-            else if(this.generationType == "random" && Object.keys(userArray[value]).length > 0 ){
+            else if(this.generationType == "random" && userArray[value].length > 0 ){
               try{
                 var i = Math.floor(Math.random() * userArray[value].length-1);
                 this.discordMessage?.channel.send(i + " " + userArray[value][i].quote)
@@ -159,7 +152,5 @@ export class QuoteCommand implements IQuoteCommand {
       }
     }
 }
-function err(_err: any) {
-  throw new Error("Function not implemented.");
-}
+
   
