@@ -144,19 +144,7 @@ export class QuoteCommand implements IQuoteCommand {
                 let number = this.findType.substring(1)
                 if(parseInt(number)-1 < Object.keys(userArray).length){
                   userArray[value].splice(parseInt(number)-1,1)
-                  const data2 = fs.readFileSync('quotes2.json', 'utf8');
-                  const newUserArray = JSON.parse(data2)
-                  for(let i = 0; i < Object.keys(userArray).length; i = i + 1){
-                    for(let j = 0; j < Object.keys(userArray[i]).length; j = j + 1){
-                      try {
-                        newUserArray[i].push(userArray[i][j])
-                      } catch (error) {
-                        console.log("JSON data cannot be saved")
-                        console.error(err);
-                      }
-                    }
-                  }
-                  fs.writeFileSync('quotes.json', JSON.stringify(newUserArray));
+                  fs.writeFileSync('quotes.json', JSON.stringify(userArray));
                   console.log("JSON data is saved.");
                 }else{
                   this.discordMessage?.channel.send("The #X of quote does not exist for this person, thus you cant delete it")

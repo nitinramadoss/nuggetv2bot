@@ -13,7 +13,6 @@ export enum CommandType {
   Impersonate = "impersonate",
   Generate = "random",
   Quote = "quote",
-  Generate = "random"
 }
 
 /*
